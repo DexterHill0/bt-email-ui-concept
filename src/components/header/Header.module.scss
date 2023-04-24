@@ -1,0 +1,177 @@
+@import "../../styles.scss";
+
+$header-height: 75px;
+
+$pad: 13px;
+$gap: 55px;
+
+.header {
+    height: $header-height;
+    background-color: $dark-1;
+    display: flex;
+    overflow: hidden;
+
+    .headerContentRounded {
+        height: 100%;
+        width: $gap;
+        background: $primary;
+        border-top-right-radius: 100%;
+        border-bottom-right-radius: 100%;
+        z-index: 0;
+        margin-right: $gap;
+    }
+
+    .headerContent {
+        @extend .header; // copy parent
+        background: $primary;
+        justify-content: start;
+        gap: $gap;
+        z-index: 1;
+
+        .logo {
+            padding: $pad;
+            max-width: 100%;
+            max-height: 100%;
+        }
+
+        .links {
+            height: 100%;
+            display: flex;
+            gap: $gap;
+            color: $text-light;
+            justify-content: center;
+            align-items: center;
+
+            .linkContainer {
+                height: 100%;
+                display: flex;
+                align-items: center;
+            }
+
+            .link:hover {
+                text-decoration: underline;
+                text-decoration-thickness: 2px;
+                text-decoration-skip-ink: none;
+                text-underline-offset: 10px;
+            }
+
+            .selected {
+                display: flex;
+                align-items: center;
+                color: $primary;
+                font-weight: 200;
+                background-color: $text-light;
+                margin-top: 6px;
+                height: calc(100% - 6px);
+                position: relative;
+
+                &:hover {
+                    text-decoration: none;
+                }
+
+                // extra white space to left and right of text
+                // must be done with box shadows so it dont affect the element's size
+                &::after {
+                    content: "";
+                    box-shadow: -20px 0px 0px 0px $text-light;
+                    position: absolute;
+                    width: 20px;
+                    height: 100%;
+                    border-top-left-radius: $brd-rds;
+                }
+                &::before {
+                    content: "";
+                    box-shadow: 20px 0px 0px 0px $text-light;
+                    position: absolute;
+                    width: 20px;
+                    height: 100%;
+                    right: 0;
+                    border-top-right-radius: $brd-rds;
+                }
+
+                // requires another element as the pseudo-elements of `selected` are already uses
+                .concave {
+                    position: absolute;
+                    width: 100%;
+                    height: 100%;
+
+                    // concave corners using radial gradients
+                    &::after {
+                        content: "";
+                        position: absolute;
+                        // always half of the background size
+                        width: 37px;
+                        height: 37px;
+                        left: 0;
+                        bottom: 0;
+                        transform: translateX(calc(-20px - 100%));
+                        background: radial-gradient(
+                                closest-side,
+                                transparent 98%,
+                                $text-light 100%
+                            )
+                            100% 100% /75px 75px;
+                    }
+                    &::before {
+                        content: "";
+                        position: absolute;
+                        width: 37px;
+                        height: 37px;
+                        right: 0;
+                        bottom: 0;
+                        transform: translateX(calc(20px + 100%));
+                        background: radial-gradient(
+                                closest-side,
+                                transparent 98%,
+                                $text-light 100%
+                            )
+                            0% 100% /75px 75px;
+                    }
+                }
+            }
+        }
+    }
+
+    .rect {
+        height: 100%;
+        flex: 1 0 0;
+        background: $primary;
+        transform: rotate(5deg) translateY(25%);
+        border-top-right-radius: 75px;
+        border-top-left-radius: 75px;
+        transform-origin: top left;
+    }
+
+    .settings {
+        background: $primary;
+        height: 100%;
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+        flex: 0.5 0 auto;
+    }
+
+    .settingsIcon {
+        color: white;
+        width: 35px;
+        height: inherit;
+        padding: 0 $pad 0 $pad;
+        cursor: pointer;
+        transition: transform 0.5s ease-in-out;
+
+        &:hover {
+            transform: rotate(30deg);
+            transform-origin: center;
+        }
+    }
+
+    .settingsRounded {
+        height: 100%;
+        width: $gap;
+        background: $primary;
+        border-top-left-radius: 100%;
+        border-bottom-left-radius: 100%;
+        z-index: 0;
+        margin-left: $gap;
+    }
+}

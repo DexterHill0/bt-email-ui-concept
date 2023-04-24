@@ -1,0 +1,42 @@
+$text-xl: 23px;
+$text-lg: 19px;
+$text-md: 16px;
+$text-sm: 12px;
+
+$icon-lg: 20px;
+$icon-md: 15px;
+
+$light-1: #eee8f8;
+$primary: #5514b4;
+$dark-1: #441090;
+
+$text-light: #fff;
+$text-dark: #000;
+$notif: #ff6767;
+
+$brd-rds: 20px;
+
+ul,
+li,
+a,
+h1,
+h2,
+h3,
+h4 {
+    all: unset;
+}
+a {
+    cursor: pointer;
+}
+h1 {
+    font-size: $text-xl;
+}
+h2 {
+    font-size: $text-lg;
+}
+h3 {
+    font-size: $text-md;
+}
+h4 {
+    font-size: $text-sm;
+}
