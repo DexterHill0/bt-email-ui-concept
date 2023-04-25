@@ -1,9 +1,11 @@
 import React from "react";
-import styles from "./Header.module.scss";
-
 import { default as cx } from "classnames";
 import { IonIcon } from "@ionic/react";
 import { settingsOutline } from "ionicons/icons";
+
+import styles from "./Header.module.scss";
+
+import Text from "../text/Text";
 
 const LINKS = [
     ["Mail", "#"],
@@ -30,7 +32,9 @@ const Header: React.FC = () => {
                     <ul className={styles.links}>
                         {LINKS.map((l, i) => (
                             <li key={i} className={styles.linkContainer}>
-                                <a
+                                <Text
+                                    form="a"
+                                    size="lg"
                                     href={l[1]}
                                     className={cx({
                                         [styles.link]: true,
@@ -38,8 +42,8 @@ const Header: React.FC = () => {
                                     })}
                                 >
                                     <div className={styles.concave}></div>
-                                    <h2>{l[0]}</h2>
-                                </a>
+                                    {l[0]}
+                                </Text>
                             </li>
                         ))}
                     </ul>

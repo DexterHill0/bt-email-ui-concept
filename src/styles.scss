@@ -14,14 +14,15 @@ $primary: #5514b4;
 $dark-1: #441090;
 
 :root {
-    --primary: $primary;
+    --primary: #{$primary};
 }
 
 $text-light: #fff;
 $text-dark: #000;
 $notif: #ff6767;
 
-$bdr-rds: 20px;
+$bdr-rds-sm: 10px;
+$bdr-rds-md: 20px;
 
 button,
 ul,

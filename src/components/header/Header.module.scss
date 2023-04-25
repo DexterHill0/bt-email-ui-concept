@@ -77,7 +77,7 @@ $gap: 55px;
                     position: absolute;
                     width: 20px;
                     height: 100%;
-                    border-top-left-radius: $bdr-rds;
+                    border-top-left-radius: $bdr-rds-md;
                 }
                 &::before {
                     content: "";
@@ -86,7 +86,7 @@ $gap: 55px;
                     width: 20px;
                     height: 100%;
                     right: 0;
-                    border-top-right-radius: $bdr-rds;
+                    border-top-right-radius: $bdr-rds-md;
                 }
 
                 // requires another element as the pseudo-elements of `selected` are already uses

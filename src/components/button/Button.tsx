@@ -1,8 +1,8 @@
 import * as React from "react";
 import { default as cx } from "classnames";
+import { IonIcon } from "@ionic/react";
 
 import styles from "./Button.module.scss";
-import { IonIcon } from "@ionic/react";
 
 interface Props {
     width: string;
@@ -42,10 +42,10 @@ const Button: React.FC<Props> = (props) => {
                 <div className={styles.content}>
                     <IonIcon
                         icon={props.icon}
-                        data-size={props.iconSize || "md"}
+                        data-size={props.iconSize || "lg"}
                         className={styles.icon}
                     ></IonIcon>
-                    <span>{props.children}</span>
+                    {props.children}
                 </div>
             ) : (
                 props.children
