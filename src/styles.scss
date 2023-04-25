@@ -1,3 +1,6 @@
+@use "sass:string";
+@use "sass:meta";
+
 $text-xl: 23px;
 $text-lg: 19px;
 $text-md: 16px;
@@ -10,12 +13,17 @@ $light-1: #eee8f8;
 $primary: #5514b4;
 $dark-1: #441090;
 
+:root {
+    --primary: $primary;
+}
+
 $text-light: #fff;
 $text-dark: #000;
 $notif: #ff6767;
 
-$brd-rds: 20px;
+$bdr-rds: 20px;
 
+button,
 ul,
 li,
 a,
@@ -25,7 +33,8 @@ h3,
 h4 {
     all: unset;
 }
-a {
+a,
+button {
     cursor: pointer;
 }
 h1 {
