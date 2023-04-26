@@ -18,6 +18,7 @@ import Text from "./components/text/Text";
 import styles from "./App.module.scss";
 import Divider from "./components/divider/Divider";
 import { IonIcon } from "@ionic/react";
+import Search from "./components/search/Search";
 
 const BUTTONS: { [key: string]: JSX.Element } = {
     compose: (
@@ -27,6 +28,7 @@ const BUTTONS: { [key: string]: JSX.Element } = {
             theme="filled"
             icon={pencilOutline}
             colour="var(--primary)"
+            tooltip="Compose new E-Mail"
         >
             <Text weight={600}>Compose</Text>
         </Button>
@@ -37,6 +39,7 @@ const BUTTONS: { [key: string]: JSX.Element } = {
             height="35px"
             icon={refreshOutline}
             colour="var(--primary)"
+            tooltip="Refresh Inbox"
         ></Button>
     ),
     reply: (
@@ -46,6 +49,7 @@ const BUTTONS: { [key: string]: JSX.Element } = {
             icon={returnDownBackOutline}
             colour="var(--primary)"
             disabled
+            tooltip="Reply"
         ></Button>
     ),
     replyAll: (
@@ -55,6 +59,7 @@ const BUTTONS: { [key: string]: JSX.Element } = {
             icon={returnDownBackOutline}
             colour="var(--primary)"
             disabled
+            tooltip="Reply All"
         ></Button>
     ),
     forward: (
@@ -64,6 +69,7 @@ const BUTTONS: { [key: string]: JSX.Element } = {
             icon={returnUpForwardOutline}
             colour="var(--primary)"
             disabled
+            tooltip="Forward"
         ></Button>
     ),
     delete: (
@@ -73,6 +79,7 @@ const BUTTONS: { [key: string]: JSX.Element } = {
             icon={trashOutline}
             colour="var(--primary)"
             disabled
+            tooltip="Delete"
         ></Button>
     ),
     markRead: (
@@ -82,6 +89,7 @@ const BUTTONS: { [key: string]: JSX.Element } = {
             icon={eyeOutline}
             colour="var(--primary)"
             disabled
+            tooltip="Mark as Read"
         ></Button>
     ),
     flag: (
@@ -91,6 +99,7 @@ const BUTTONS: { [key: string]: JSX.Element } = {
             icon={flagOutline}
             colour="var(--primary)"
             disabled
+            tooltip="Flag"
         ></Button>
     ),
     move: (
@@ -100,6 +109,7 @@ const BUTTONS: { [key: string]: JSX.Element } = {
             icon={folderOutline}
             colour="var(--primary)"
             disabled
+            tooltip="Move"
         ></Button>
     ),
 };
@@ -120,7 +130,13 @@ const App: React.FC = () => {
 
                     <div className={styles.search}>
                         <Divider orientation="v"></Divider>
-                        <div>search</div>
+                        <Search
+                            width="34rem"
+                            height="35px"
+                            colour="var(--primary)"
+                            placeholder="Search Mail"
+                            tooltip="Search Mail"
+                        ></Search>
                         <Divider orientation="v"></Divider>
                     </div>
 

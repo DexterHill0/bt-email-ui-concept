@@ -24,6 +24,8 @@
 
         .search {
             display: flex;
+            align-items: center;
+            gap: $edge-pad;
         }
 
         .email {

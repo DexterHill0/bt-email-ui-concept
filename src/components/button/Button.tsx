@@ -16,6 +16,7 @@ interface Props {
     colour?: string;
 
     disabled?: boolean;
+    tooltip?: string;
 
     children?: React.ReactNode;
 }
@@ -23,6 +24,7 @@ interface Props {
 const Button: React.FC<Props> = (props) => {
     return (
         <button
+            title={props.tooltip}
             style={{
                 width: props.width,
                 height: props.height,

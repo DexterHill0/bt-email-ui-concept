@@ -1,0 +1,42 @@
+@import "../../styles.scss";
+
+input {
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+}
+
+.search {
+    border-radius: $bdr-rds-sm;
+    border-width: 1px;
+    border-style: solid;
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+    gap: 15px;
+    padding: 0 15px 0 15px;
+
+    .inputContainer {
+        max-width: 100%;
+
+        .input {
+            width: 100%;
+            height: 100%;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+        }
+    }
+
+    .searchIcon {
+        min-width: $icon-lg;
+        min-height: $icon-lg;
+        cursor: pointer;
+    }
+
+    .optionsIcon {
+        margin-left: auto;
+        min-width: $icon-lg;
+        min-height: $icon-lg;
+        cursor: pointer;
+    }
+}
