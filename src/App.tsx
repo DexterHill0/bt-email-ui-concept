@@ -1,5 +1,6 @@
 import React from "react";
 import {
+    chevronDownOutline,
     eyeOutline,
     flagOutline,
     folderOutline,
@@ -15,6 +16,8 @@ import Button from "./components/button/Button";
 import Text from "./components/text/Text";
 
 import styles from "./App.module.scss";
+import Divider from "./components/divider/Divider";
+import { IonIcon } from "@ionic/react";
 
 const BUTTONS: { [key: string]: JSX.Element } = {
     compose: (
@@ -42,6 +45,7 @@ const BUTTONS: { [key: string]: JSX.Element } = {
             height="35px"
             icon={returnDownBackOutline}
             colour="var(--primary)"
+            disabled
         ></Button>
     ),
     replyAll: (
@@ -50,6 +54,7 @@ const BUTTONS: { [key: string]: JSX.Element } = {
             height="35px"
             icon={returnDownBackOutline}
             colour="var(--primary)"
+            disabled
         ></Button>
     ),
     forward: (
@@ -58,6 +63,7 @@ const BUTTONS: { [key: string]: JSX.Element } = {
             height="35px"
             icon={returnUpForwardOutline}
             colour="var(--primary)"
+            disabled
         ></Button>
     ),
     delete: (
@@ -66,6 +72,7 @@ const BUTTONS: { [key: string]: JSX.Element } = {
             height="35px"
             icon={trashOutline}
             colour="var(--primary)"
+            disabled
         ></Button>
     ),
     markRead: (
@@ -74,6 +81,7 @@ const BUTTONS: { [key: string]: JSX.Element } = {
             height="35px"
             icon={eyeOutline}
             colour="var(--primary)"
+            disabled
         ></Button>
     ),
     flag: (
@@ -82,6 +90,7 @@ const BUTTONS: { [key: string]: JSX.Element } = {
             height="35px"
             icon={flagOutline}
             colour="var(--primary)"
+            disabled
         ></Button>
     ),
     move: (
@@ -90,18 +99,41 @@ const BUTTONS: { [key: string]: JSX.Element } = {
             height="35px"
             icon={folderOutline}
             colour="var(--primary)"
+            disabled
         ></Button>
     ),
 };
 
 const App: React.FC = () => {
+    const email = "lorem.ipsum@dolor.sit";
+
     return (
         <div className="App">
             <Header></Header>
-            <section className={styles.toolbar}>
-                <div className={styles.buttons}>
-                    {Object.keys(BUTTONS).map((k) => BUTTONS[k])}
+            <section className={styles.toolbarContainer}>
+                <div className={styles.toolbar}>
+                    <div className={styles.buttonsContainer}>
+                        <div className={styles.buttons}>
+                            {Object.keys(BUTTONS).map((k) => BUTTONS[k])}
+                        </div>
+                    </div>
+
+                    <div className={styles.search}>
+                        <Divider orientation="v"></Divider>
+                        <div>search</div>
+                        <Divider orientation="v"></Divider>
+                    </div>
+
+                    <div className={styles.email}>
+                        <Divider orientation="v"></Divider>
+                        <Text>{email}</Text>
+                        <IonIcon
+                            icon={chevronDownOutline}
+                            style={{ cursor: "pointer" }}
+                        ></IonIcon>
+                    </div>
                 </div>
+                <Divider></Divider>
             </section>
         </div>
     );

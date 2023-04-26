@@ -7,6 +7,10 @@
     align-items: center;
     user-select: none;
 
+    &:not(.disabled):active {
+        box-shadow: inset 5px 5px 15px -5px rgba(0, 0, 0, 0.2);
+    }
+
     &[data-theme="outline"] {
         border-width: 1px;
         border-style: solid;

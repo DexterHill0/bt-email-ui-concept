@@ -9,7 +9,7 @@ interface Props {
     colour?: string;
 
     href?: string;
-    form?: "h1" | "h2" | "h3" | "h4" | "a";
+    form?: "h1" | "h2" | "h3" | "h4" | "a" | "p" | "span";
 
     className?: string;
 
@@ -17,7 +17,7 @@ interface Props {
 }
 
 const Text: React.FC<Props> = (props) => {
-    const Form = props.form || "a";
+    const Form = props.form || "span";
 
     return (
         <Form

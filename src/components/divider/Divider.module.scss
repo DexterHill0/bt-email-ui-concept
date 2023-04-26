@@ -1,0 +1,79 @@
+@import "../../styles.scss";
+
+.divider {
+    position: relative;
+
+    &[data-orientation="h"] {
+        height: 1px;
+        width: 100%;
+        // the width is 100% for simplicity, so this adds 2 white pixels each side to mimic padding
+        background: linear-gradient(
+            90deg,
+            #fff 2px,
+            $divider 2px,
+            $divider calc(100% - 2px),
+            #fff calc(100% - 2px)
+        );
+
+        // adds whitespace so if a vertical divider ends above/below a horizontal divider
+        // then there will be a gap in the middle of the horizontal divider (and vice versa)
+        &::before {
+            content: "";
+            height: 5px;
+            width: 2px;
+            background: #fff;
+            position: absolute;
+            left: 0;
+            transform: translate(-50%, -50.5%);
+            top: 50.5%;
+            z-index: 1;
+        }
+
+        &::after {
+            content: "";
+            height: 5px;
+            width: 2px;
+            background: #fff;
+            position: absolute;
+            right: 0;
+            transform: translate(-50%, -50.5%);
+            top: 50.5%;
+            z-index: 1;
+        }
+    }
+    &[data-orientation="v"] {
+        height: 100%;
+        width: 1px;
+        background: linear-gradient(
+            180deg,
+            #fff 2px,
+            $divider 2px,
+            $divider calc(100% - 2px),
+            #fff calc(100% - 2px)
+        );
+
+        &::before {
+            content: "";
+            width: 5px;
+            height: 2px;
+            background: #fff;
+            position: absolute;
+            top: 0;
+            transform: translate(-50.5%, -50%);
+            left: 50.5%;
+            z-index: 1;
+        }
+
+        &::after {
+            content: "";
+            width: 5px;
+            height: 2px;
+            background: #fff;
+            position: absolute;
+            bottom: 0;
+            transform: translate(-50.5%, 50%);
+            left: 50.5%;
+            z-index: 1;
+        }
+    }
+}
