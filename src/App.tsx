@@ -19,6 +19,7 @@ import styles from "./App.module.scss";
 import Divider from "./components/divider/Divider";
 import { IonIcon } from "@ionic/react";
 import Search from "./components/search/Search";
+import Resizable from "./components/resizable/Resizable";
 
 const BUTTONS: { [key: string]: JSX.Element } = {
     compose: (
@@ -118,7 +119,7 @@ const App: React.FC = () => {
     const email = "lorem.ipsum@dolor.sit";
 
     return (
-        <div className="App">
+        <div className={styles.app}>
             <Header></Header>
             <section className={styles.toolbarContainer}>
                 <div className={styles.toolbar}>
@@ -150,6 +151,19 @@ const App: React.FC = () => {
                     </div>
                 </div>
                 <Divider></Divider>
+            </section>
+            <section className={styles.mainContent}>
+                <Resizable
+                    orientation="v"
+                    className={styles.sidebar}
+                    // height={250}
+                    width={250}
+                    // maxConstraints={[500, 0]}
+                    disableSelectOnDrag
+                    collapseOnMinContent
+                >
+                    poobar
+                </Resizable>
             </section>
         </div>
     );

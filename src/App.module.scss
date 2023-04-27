@@ -1,5 +1,12 @@
 @import "./styles.scss";
 
+.app {
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
 .toolbarContainer {
     width: 100%;
     height: 50px;
@@ -36,5 +43,18 @@
             padding-right: $edge-pad;
             gap: 10px;
         }
+    }
+}
+
+.mainContent {
+    width: 100%;
+    flex-grow: 1;
+    display: flex;
+
+    .sidebar {
+        //flex-direction: column;
+        //height: 100%;
+        width: 100%;
+        display: flex;
     }
 }

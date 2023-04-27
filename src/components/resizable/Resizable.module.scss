@@ -1,0 +1,53 @@
+@import "../../styles.scss";
+
+.resizable {
+    display: flex;
+
+    .dragMargin {
+        display: flex;
+        cursor: col-resize;
+        transition: background 0.5s ease-in-out;
+        position: relative;
+
+        &[data-orientation="h"] {
+            align-items: center;
+            height: 5px;
+            width: 100%;
+            margin-top: auto;
+        }
+        &[data-orientation="v"] {
+            justify-content: center;
+            height: 100%;
+            width: 5px;
+            margin-left: auto;
+        }
+
+        &:hover {
+            background: rgba($light-1, 0.7);
+        }
+
+        .dragIcon {
+            background: #fff;
+            position: absolute;
+
+            &[data-orientation="h"] {
+                left: 50%;
+                transform: translateX(-50%);
+                width: 40px;
+                height: 5px;
+                outline: 2px solid #fff;
+                border-top: 1px solid #000;
+                border-bottom: 1px solid #000;
+            }
+            &[data-orientation="v"] {
+                top: 50%;
+                transform: translateY(-50%);
+                width: 5px;
+                height: 40px;
+                outline: 2px solid #fff;
+                border-left: 1px solid #000;
+                border-right: 1px solid #000;
+            }
+        }
+    }
+}
