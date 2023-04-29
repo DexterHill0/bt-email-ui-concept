@@ -168,6 +168,7 @@ const App: React.FC = () => {
                         name="Inbox"
                         icon={fileTrayStackedOutline}
                         isSelected
+                        notifCount={0}
                     ></FolderItem>
                 </Resizable>
             </section>

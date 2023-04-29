@@ -1,0 +1,29 @@
+@import "../../styles.scss";
+
+.container {
+    position: relative;
+    display: flex;
+    align-items: center;
+
+    .notification {
+        z-index: 10;
+        position: absolute;
+        transform: translate(50%, -50%);
+        right: 0;
+        background: $notif;
+        color: $text-light;
+        border-radius: 20px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        object-fit: contain;
+        overflow: hidden;
+        max-height: 15px;
+        text-overflow: ellipsis;
+
+        .text {
+            padding: 3px;
+            font-size: 0.5cqw;
+        }
+    }
+}

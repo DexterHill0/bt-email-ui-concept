@@ -1,11 +1,12 @@
 import React, { useState } from "react";
 import { default as cx } from "classnames";
+import { starOutline } from "ionicons/icons";
 
 import Text from "../text/Text";
+import Icon from "../icon/Icon";
+import Notification from "../notification/Notification";
 
 import styles from "./FolderItem.module.scss";
-import Icon from "../icon/Icon";
-import { starOutline } from "ionicons/icons";
 
 interface Props {
     icon: string;
@@ -16,7 +17,7 @@ interface Props {
 
     iconSize?: "md" | "lg";
 
-    notifs?: number;
+    notifCount?: number;
 }
 
 const FolderItem: React.FC<Props> = (props) => {
@@ -32,7 +33,16 @@ const FolderItem: React.FC<Props> = (props) => {
             onMouseOut={() => setIsHovered(false)}
         >
             <div className={styles.name}>
-                <Icon icon={props.icon} iconSize={props.iconSize}></Icon>
+                {props.notifCount ? (
+                    <Notification count={props.notifCount}>
+                        <Icon
+                            icon={props.icon}
+                            iconSize={props.iconSize}
+                        ></Icon>
+                    </Notification>
+                ) : (
+                    <Icon icon={props.icon} iconSize={props.iconSize}></Icon>
+                )}
                 <Text weight={props.isSelected ? 600 : 400}>{props.name}</Text>
             </div>
 
