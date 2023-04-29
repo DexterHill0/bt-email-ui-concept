@@ -1,0 +1,27 @@
+@import "../../styles.scss";
+
+.folder {
+    padding: 0 30px 0 30px;
+    display: flex;
+    height: 35px;
+    align-items: center;
+    min-width: min-content;
+    gap: 15px;
+
+    .name {
+        display: flex;
+        gap: 15px;
+        align-items: center;
+    }
+
+    .star {
+        margin-left: auto;
+        cursor: pointer;
+        color: $text-dark;
+    }
+}
+
+.selected {
+    color: $primary;
+    background: $light-1;
+}

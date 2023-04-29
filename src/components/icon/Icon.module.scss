@@ -1,0 +1,12 @@
+@import "../../styles.scss";
+
+.icon {
+    &[data-size="md"] {
+        width: $icon-md;
+        height: $icon-md;
+    }
+    &[data-size="lg"] {
+        width: $icon-lg;
+        height: $icon-lg;
+    }
+}

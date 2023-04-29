@@ -2,11 +2,13 @@ import React from "react";
 import {
     chevronDownOutline,
     eyeOutline,
+    fileTrayStackedOutline,
     flagOutline,
     folderOutline,
     pencilOutline,
     refreshOutline,
     returnDownBackOutline,
+    returnUpBackOutline,
     returnUpForwardOutline,
     trashOutline,
 } from "ionicons/icons";
@@ -20,6 +22,7 @@ import Divider from "./components/divider/Divider";
 import { IonIcon } from "@ionic/react";
 import Search from "./components/search/Search";
 import Resizable from "./components/resizable/Resizable";
+import FolderItem from "./components/folderitem/FolderItem";
 
 const BUTTONS: { [key: string]: JSX.Element } = {
     compose: (
@@ -47,7 +50,7 @@ const BUTTONS: { [key: string]: JSX.Element } = {
         <Button
             width="45px"
             height="35px"
-            icon={returnDownBackOutline}
+            icon={returnUpBackOutline}
             colour="var(--primary)"
             disabled
             tooltip="Reply"
@@ -57,7 +60,7 @@ const BUTTONS: { [key: string]: JSX.Element } = {
         <Button
             width="45px"
             height="35px"
-            icon={returnDownBackOutline}
+            icon="reply_all.svg"
             colour="var(--primary)"
             disabled
             tooltip="Reply All"
@@ -156,13 +159,16 @@ const App: React.FC = () => {
                 <Resizable
                     orientation="v"
                     className={styles.sidebar}
-                    // height={250}
                     width={250}
-                    // maxConstraints={[500, 0]}
+                    maxConstraints={[500, 0]}
                     disableSelectOnDrag
                     collapseOnMinContent
                 >
-                    poobar
+                    <FolderItem
+                        name="Inbox"
+                        icon={fileTrayStackedOutline}
+                        isSelected
+                    ></FolderItem>
                 </Resizable>
             </section>
         </div>

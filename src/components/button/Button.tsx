@@ -3,6 +3,7 @@ import { default as cx } from "classnames";
 import { IonIcon } from "@ionic/react";
 
 import styles from "./Button.module.scss";
+import Icon from "../icon/Icon";
 
 interface Props {
     width: string;
@@ -42,11 +43,7 @@ const Button: React.FC<Props> = (props) => {
         >
             {props.icon ? (
                 <div className={styles.content}>
-                    <IonIcon
-                        icon={props.icon}
-                        data-size={props.iconSize || "lg"}
-                        className={styles.icon}
-                    ></IonIcon>
+                    <Icon icon={props.icon} iconSize={props.iconSize}></Icon>
                     {props.children}
                 </div>
             ) : (

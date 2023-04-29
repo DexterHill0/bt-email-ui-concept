@@ -29,8 +29,6 @@ const Resizable: React.FC<Props> = (props) => {
     const contentRef = useRef<HTMLDivElement>(null);
     const parentRef = useRef<HTMLDivElement>(null);
 
-    // keeps track of the size of the inner content (for example, it could flex-grow so the size changes as you resize)
-    const [contentSize, setContentSize] = useState([0, 0]);
     // hides the content if it is collapsible
     const [contentVisible, setContentVisible] = useState(true);
 
@@ -45,24 +43,18 @@ const Resizable: React.FC<Props> = (props) => {
         height: props.height || 0,
     });
 
-    useEffect(() => {
-        if (props.collapseOnMinContent && contentRef.current) {
-            setContentSize([
-                contentRef.current.clientWidth,
-                contentRef.current.clientHeight,
-            ]);
-        }
-    }, []);
+    const isHorizontal = (props.orientation || "h") === "h";
 
     useEffect(() => {
         if (isDragging) {
+            collapseDragAmount = prevDragAmount;
+            // contentSize = contentSizeSa;
+
             window.addEventListener("mousemove", onMouseMove);
             window.addEventListener("mouseup", () => {
                 onEndDrag();
                 window.removeEventListener("mousemove", onMouseMove);
             });
-
-            collapseDragAmount = prevDragAmount;
         }
     }, [isDragging]);
 
@@ -105,24 +97,27 @@ const Resizable: React.FC<Props> = (props) => {
         if (!minConstraints && !maxConstraints && !props.collapseOnMinContent)
             return [width, height];
 
-        if (width <= contentSize[0] && height <= contentSize[1]) {
+        let m = props.collapseOnMinContent && contentRef.current;
+
+        if (
+            props.collapseOnMinContent &&
+            contentRef.current &&
+            ((!isHorizontal && width < contentRef.current.offsetWidth) ||
+                (isHorizontal && height < contentRef.current.offsetHeight))
+        ) {
             if (collapseDragAmount < collapseThreshold) {
                 collapseDragAmount += 1;
                 setPrevDragAmount(collapseDragAmount);
 
-                return [contentSize[0], contentSize[1]];
+                return [
+                    contentRef.current.offsetWidth,
+                    contentRef.current.offsetHeight,
+                ];
             } else if (collapseDragAmount >= collapseThreshold) {
                 setContentVisible(false);
 
                 return [0, 0];
             }
-        }
-
-        if (props.collapseOnMinContent && contentRef.current) {
-            setContentSize([
-                contentRef.current.clientWidth,
-                contentRef.current.clientHeight,
-            ]);
         }
 
         collapseDragAmount = 0;
@@ -143,11 +138,8 @@ const Resizable: React.FC<Props> = (props) => {
     return (
         <div
             style={{
-                width:
-                    (props.orientation || "h") === "h"
-                        ? props.width
-                        : size.width,
-                height: props.orientation === "v" ? props.height : size.height,
+                width: isHorizontal ? props.width : size.width,
+                height: !isHorizontal ? props.height : size.height,
                 userSelect:
                     isDragging && props.disableSelectOnDrag ? "none" : "unset",
             }}
@@ -155,24 +147,21 @@ const Resizable: React.FC<Props> = (props) => {
             ref={parentRef}
         >
             <div
-                ref={contentRef}
                 style={{
                     visibility: contentVisible ? "visible" : "hidden",
-                    width:
-                        props.orientation === "v"
-                            ? contentVisible
-                                ? "auto"
-                                : "0px"
-                            : "auto",
-                    height:
-                        (props.orientation || "h") === "h"
-                            ? contentVisible
-                                ? "auto"
-                                : "0px"
-                            : "auto",
+                    width: !isHorizontal
+                        ? contentVisible
+                            ? "inherit"
+                            : "0px"
+                        : "inherit",
+                    height: isHorizontal
+                        ? contentVisible
+                            ? "inherit"
+                            : "0px"
+                        : "inherit",
                 }}
             >
-                {props.children}
+                <span ref={contentRef}>{props.children}</span>
             </div>
             <div
                 data-orientation={props.orientation || "h"}
