@@ -9,6 +9,8 @@ interface Props {
     iconSize?: "md" | "lg";
     className?: string;
     style?: React.CSSProperties;
+
+    onClick?: (event: React.MouseEvent<HTMLIonIconElement, MouseEvent>) => void;
 }
 
 // wrapper to make it easier to set the size
@@ -19,6 +21,7 @@ const Icon: React.FunctionComponent<Props> = (props) => {
             data-size={props.iconSize || "lg"}
             className={cx(styles.icon, props.className)}
             style={props.style}
+            onClick={props.onClick}
         ></IonIcon>
     );
 };

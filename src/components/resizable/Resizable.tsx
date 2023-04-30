@@ -21,6 +21,7 @@ interface Props {
     height?: number;
 
     className?: string;
+    contentClassName?: string;
 
     children: React.ReactNode;
 }
@@ -32,7 +33,7 @@ const Resizable: React.FC<Props> = (props) => {
     // hides the content if it is collapsible
     const [contentVisible, setContentVisible] = useState(true);
 
-    const collapseThreshold = props.collapseThreshold || 20;
+    const collapseThreshold = props.collapseThreshold || 100;
     let collapseDragAmount = 0;
 
     const [prevDragAmount, setPrevDragAmount] = useState(0);
@@ -48,7 +49,6 @@ const Resizable: React.FC<Props> = (props) => {
     useEffect(() => {
         if (isDragging) {
             collapseDragAmount = prevDragAmount;
-            // contentSize = contentSizeSa;
 
             window.addEventListener("mousemove", onMouseMove);
             window.addEventListener("mouseup", () => {
@@ -73,10 +73,10 @@ const Resizable: React.FC<Props> = (props) => {
         }
 
         let [width, height] = calcConstraints(
-            // in theory this is what `e.offsetX` and `e.offsetY` should do but they seem to be broken
-            // (gives erroneous values randomly)
-            e.clientX - parentRef.current.getBoundingClientRect().left,
-            e.clientY - parentRef.current.getBoundingClientRect().top
+            e.clientX,
+            e.clientY,
+            e.movementX,
+            e.movementY
         );
 
         setSize({
@@ -90,38 +90,54 @@ const Resizable: React.FC<Props> = (props) => {
 
     const calcConstraints = (
         width: number,
-        height: number
+        height: number,
+        changeX: number,
+        changeY: number
     ): [number, number] => {
         const { minConstraints, maxConstraints } = props;
+
         // short circuit
         if (!minConstraints && !maxConstraints && !props.collapseOnMinContent)
             return [width, height];
 
-        let m = props.collapseOnMinContent && contentRef.current;
-
         if (
             props.collapseOnMinContent &&
             contentRef.current &&
-            ((!isHorizontal && width < contentRef.current.offsetWidth) ||
-                (isHorizontal && height < contentRef.current.offsetHeight))
+            parentRef.current
         ) {
-            if (collapseDragAmount < collapseThreshold) {
-                collapseDragAmount += 1;
+            if (
+                (!isHorizontal &&
+                    contentRef.current.offsetWidth -
+                        parentRef.current.offsetWidth >=
+                        0) ||
+                (isHorizontal &&
+                    contentRef.current.offsetHeight -
+                        parentRef.current.offsetHeight >=
+                        0)
+            ) {
+                collapseDragAmount -= isHorizontal ? changeY : changeX;
                 setPrevDragAmount(collapseDragAmount);
 
-                return [
-                    contentRef.current.offsetWidth,
-                    contentRef.current.offsetHeight,
-                ];
-            } else if (collapseDragAmount >= collapseThreshold) {
-                setContentVisible(false);
-
-                return [0, 0];
+                if (collapseDragAmount >= collapseThreshold) {
+                    setContentVisible(false);
+                    return [0, 0];
+                } else if (
+                    (collapseDragAmount < collapseThreshold &&
+                        !isHorizontal &&
+                        width <= contentRef.current.offsetWidth) ||
+                    (isHorizontal && height <= contentRef.current.offsetHeight)
+                ) {
+                    setContentVisible(true);
+                    return [
+                        contentRef.current.offsetWidth,
+                        contentRef.current.offsetHeight,
+                    ];
+                } else {
+                    collapseDragAmount = 0;
+                    setPrevDragAmount(collapseDragAmount);
+                }
             }
         }
-
-        collapseDragAmount = 0;
-        setContentVisible(true);
 
         if (minConstraints) {
             width = Math.max(minConstraints[0], width);
@@ -148,7 +164,6 @@ const Resizable: React.FC<Props> = (props) => {
         >
             <div
                 style={{
-                    visibility: contentVisible ? "visible" : "hidden",
                     width: !isHorizontal
                         ? contentVisible
                             ? "inherit"
@@ -160,8 +175,13 @@ const Resizable: React.FC<Props> = (props) => {
                             : "0px"
                         : "inherit",
                 }}
+                className={cx({
+                    [styles.visibility]: !contentVisible,
+                })}
             >
-                <span ref={contentRef}>{props.children}</span>
+                <span ref={contentRef} className={props.contentClassName}>
+                    {props.children}
+                </span>
             </div>
             <div
                 data-orientation={props.orientation || "h"}

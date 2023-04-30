@@ -1,28 +1,29 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
     chevronDownOutline,
+    documentOutline,
     eyeOutline,
     fileTrayStackedOutline,
     flagOutline,
     folderOutline,
     pencilOutline,
     refreshOutline,
-    returnDownBackOutline,
     returnUpBackOutline,
     returnUpForwardOutline,
     trashOutline,
+    warningOutline,
 } from "ionicons/icons";
+import { IonIcon } from "@ionic/react";
 
 import Header from "./components/header/Header";
 import Button from "./components/button/Button";
 import Text from "./components/text/Text";
-
-import styles from "./App.module.scss";
-import Divider from "./components/divider/Divider";
-import { IonIcon } from "@ionic/react";
 import Search from "./components/search/Search";
 import Resizable from "./components/resizable/Resizable";
 import FolderItem from "./components/folderitem/FolderItem";
+import Divider from "./components/divider/Divider";
+
+import styles from "./App.module.scss";
 
 const BUTTONS: { [key: string]: JSX.Element } = {
     compose: (
@@ -118,8 +119,47 @@ const BUTTONS: { [key: string]: JSX.Element } = {
     ),
 };
 
+const DEFAULT_FOLDERS = [
+    {
+        name: "Inbox",
+        id: "inbox",
+        canUnstar: false,
+        icon: fileTrayStackedOutline,
+    },
+    {
+        name: "Drafts",
+        id: "drafts",
+        canUnstar: true,
+        icon: documentOutline,
+    },
+    {
+        name: "Spam",
+        id: "spam",
+        canUnstar: true,
+        icon: warningOutline,
+    },
+    {
+        name: "Trash",
+        id: "trash",
+        canUnstar: true,
+        icon: trashOutline,
+    },
+];
+
 const App: React.FC = () => {
     const email = "lorem.ipsum@dolor.sit";
+
+    const [folders, setFolders] = useState([]);
+
+    const [selectedFolder, setSelectedFolder] = useState("inbox");
+    // inbox always starred so doesnt need to be here
+    const [starredFolders, setStarredFolders] = useState<{
+        [key: string]: boolean;
+    }>({});
+
+    useEffect(() => {
+        console.log(starredFolders);
+    }, [starredFolders]);
 
     return (
         <div className={styles.app}>
@@ -159,17 +199,31 @@ const App: React.FC = () => {
                 <Resizable
                     orientation="v"
                     className={styles.sidebar}
+                    contentClassName={styles.folderList}
                     width={250}
                     maxConstraints={[500, 0]}
                     disableSelectOnDrag
                     collapseOnMinContent
                 >
-                    <FolderItem
-                        name="Inbox"
-                        icon={fileTrayStackedOutline}
-                        isSelected
-                        notifCount={0}
-                    ></FolderItem>
+                    <ul>
+                        {DEFAULT_FOLDERS.map((f, i) => (
+                            <FolderItem
+                                name={f.name}
+                                icon={f.icon}
+                                canUnstar={f.canUnstar}
+                                isSelected={selectedFolder === f.id}
+                                isStarred={starredFolders[i]}
+                                id={f.id}
+                                onClick={(_, i) => setSelectedFolder(i)}
+                                onStarred={(i) =>
+                                    setStarredFolders({
+                                        ...starredFolders,
+                                        [i]: !starredFolders[i],
+                                    })
+                                }
+                            ></FolderItem>
+                        ))}
+                    </ul>
                 </Resizable>
             </section>
         </div>

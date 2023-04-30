@@ -55,5 +55,9 @@
     .sidebar {
         width: 100%;
         display: flex;
+
+        .folderList {
+            padding: $edge-pad;
+        }
     }
 }
