@@ -51,6 +51,7 @@ const Resizable: React.FC<Props> = (props) => {
     });
 
     const isHorizontal = (props.orientation || "h") === "h";
+    const block = document.querySelector<HTMLDivElement>("#blockpointerevents");
 
     useEffect(() => {
         if (isDragging) {
@@ -63,13 +64,15 @@ const Resizable: React.FC<Props> = (props) => {
     }, [isDragging]);
 
     const onEndDrag = () => {
-        document.body.style.cursor = "unset";
+        block!.style.cursor = "unset";
+        block!.classList.remove("resizing");
         setIsDragging(false);
     };
     const onStartDrag = () => {
         // make the cursor the same for the whole document as when dragging it isnt hovering over
         // the drag element
-        document.body.style.cursor = "col-resize";
+        block!.style.cursor = isHorizontal ? "row-resize" : "col-resize";
+        block!.classList.add("resizing");
         setIsDragging(true);
     };
 

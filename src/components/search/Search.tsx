@@ -1,4 +1,4 @@
-import React from "react";
+import React, { forwardRef, useImperativeHandle } from "react";
 
 import styles from "./Search.module.scss";
 import { IonIcon } from "@ionic/react";
@@ -14,17 +14,24 @@ interface Props {
     tooltip?: string;
 }
 
-const Search: React.FC<Props> = (props) => {
-    const input = useRef<HTMLInputElement>(null);
+export interface SearchRef {
+    focus: () => void;
+}
 
-    // focuses the input element if you click on the search icon
-    const focusInputOnClick = () => {
-        if (!input.current) {
-            return;
-        }
+const Search = forwardRef<SearchRef, Props>((props, ref) => {
+    const inputRef = useRef<HTMLInputElement>(null);
 
-        input.current.focus();
-    };
+    useImperativeHandle(ref, () => ({
+        // focuses the input element if you click on the search icon
+        focus() {
+            if (!inputRef.current) {
+                return;
+            }
+
+            inputRef.current.focus();
+        },
+    }));
+
 
     return (
         <div
@@ -39,14 +46,14 @@ const Search: React.FC<Props> = (props) => {
             <IonIcon
                 icon={searchOutline}
                 className={styles.searchIcon}
-                onClick={focusInputOnClick}
+                onClick={() => inputRef.current && inputRef.current.focus()}
             ></IonIcon>
             <div className={styles.inputContainer}>
                 <input
                     type="text"
                     className={styles.input}
                     placeholder={props.placeholder}
-                    ref={input}
+                    ref={inputRef}
                 />
             </div>
             <IonIcon
@@ -56,6 +63,6 @@ const Search: React.FC<Props> = (props) => {
             ></IonIcon>
         </div>
     );
-};
+});
 
 export default Search;

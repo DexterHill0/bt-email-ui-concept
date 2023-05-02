@@ -24,8 +24,8 @@
             background: #fff;
             position: absolute;
             left: 0;
-            transform: translate(-50%, -50.5%);
-            top: 50.5%;
+            transform: translate(-50%, -50%);
+            top: 50%;
             z-index: 1;
         }
 
@@ -36,8 +36,8 @@
             background: #fff;
             position: absolute;
             right: 0;
-            transform: translate(-50%, -50.5%);
-            top: 50.5%;
+            transform: translate(-50%, -50%);
+            top: 50%;
             z-index: 1;
         }
     }
@@ -59,8 +59,8 @@
             background: #fff;
             position: absolute;
             top: 0;
-            transform: translate(-50.5%, -50%);
-            left: 50.5%;
+            transform: translate(-50%, -50%);
+            left: 50%;
             z-index: 1;
         }
 
@@ -71,8 +71,8 @@
             background: #fff;
             position: absolute;
             bottom: 0;
-            transform: translate(-50.5%, 50%);
-            left: 50.5%;
+            transform: translate(-50%, 50%);
+            left: 50%;
             z-index: 1;
         }
     }

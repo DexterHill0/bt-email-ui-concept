@@ -38,6 +38,10 @@ interface Props {
     isUnread?: boolean;
 
     attachments?: Attachments[];
+
+    id: string;
+
+    onSelected?: (selected: boolean, id: string) => void;
 }
 
 const Email: React.FunctionComponent<Props> = (props) => {
@@ -62,6 +66,11 @@ const Email: React.FunctionComponent<Props> = (props) => {
                             width="15px"
                             height="15px"
                             colour="var(--halfopacity)"
+                            onClick={(selected) => {
+                                props.onSelected &&
+                                    props.onSelected(selected, props.id);
+                            }}
+                            isChecked={props.isSelected}
                         ></CheckBox>
                     </Notification>
                 ) : (
@@ -69,6 +78,11 @@ const Email: React.FunctionComponent<Props> = (props) => {
                         width="15px"
                         height="15px"
                         colour="var(--halfopacity)"
+                        onClick={(selected) =>
+                            props.onSelected &&
+                            props.onSelected(selected, props.id)
+                        }
+                        isChecked={props.isSelected}
                     ></CheckBox>
                 )}
                 <div className={styles.content}>

@@ -18,14 +18,21 @@ interface Props {
     onClick?: (checked: boolean) => void;
 }
 
-const CheckBox: React.FunctionComponent<Props> = (props) => {
-    const [isChecked, setIsChecked] = useState(props.isChecked || false);
+const CheckBox: React.FC<Props> = (props) => {
+    const [isChecked, setIsChecked] = useState(props.isChecked ?? false);
+
+    useEffect(() => {
+        setIsChecked(props.isChecked ?? false);
+    }, [props.isChecked]);
 
     return (
         <span
             className={styles.container}
             title={props.title}
-            onClick={() => setIsChecked((v) => !v)}
+            onClick={() => {
+                setIsChecked((v) => !v);
+                props.onClick && props.onClick(!isChecked);
+            }}
         >
             <input
                 type="checkbox"
@@ -36,7 +43,7 @@ const CheckBox: React.FunctionComponent<Props> = (props) => {
                     borderColor: props.colour,
                 }}
                 disabled={props.disabled}
-                checked={isChecked}
+                defaultChecked={isChecked}
             />
             <Icon
                 icon={checkmarkOutline}

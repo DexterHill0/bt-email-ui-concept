@@ -1,7 +1,19 @@
 @import "../../styles.scss";
 
+// prevents pointer events without actually outright blocking pointer events as
+// that resets the cursor and we want a custom cursor
+:global(#blockpointerevents.resizing) {
+    width: 100vw;
+    height: 100vh;
+    z-index: 200;
+    background: rgba(0, 0, 0, 0);
+    position: absolute;
+    margin-top: -100vh;
+}
+
 .resizable {
     display: flex;
+    position: relative;
 
     &[data-orientation="h"] {
         flex-direction: column-reverse;
@@ -14,16 +26,17 @@
 
     .dragMargin {
         display: flex;
-        cursor: col-resize;
         transition: background 0.5s ease-in-out;
         position: relative;
 
         &[data-orientation="h"] {
+            cursor: row-resize;
             align-items: center;
             height: 5px;
             width: 100%;
         }
         &[data-orientation="v"] {
+            cursor: col-resize;
             justify-content: center;
             height: 100%;
             width: 5px;
