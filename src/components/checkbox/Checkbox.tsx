@@ -21,10 +21,6 @@ interface Props {
 const CheckBox: React.FunctionComponent<Props> = (props) => {
     const [isChecked, setIsChecked] = useState(props.isChecked || false);
 
-    useEffect(() => {
-        console.log(isChecked);
-    }, [isChecked]);
-
     return (
         <span
             className={styles.container}

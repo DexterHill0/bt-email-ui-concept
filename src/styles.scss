@@ -12,9 +12,11 @@ $light-1: #eee8f8;
 $primary: #5514b4;
 $dark-1: #441090;
 $divider: #dcdcdc;
+$halfopacity: rgba(0, 0, 0, 0.5);
 
 :root {
     --primary: #{$primary};
+    --halfopacity: #{$halfopacity};
 }
 
 $text-light: #fff;

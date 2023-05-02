@@ -32,6 +32,7 @@ import CheckBox from "./components/checkbox/Checkbox";
 import useFolders, { Folder } from "./Folders";
 
 import styles from "./App.module.scss";
+import Email, { Attachments } from "./components/email/Email";
 
 const BUTTONS: { [key: string]: JSX.Element } = {
     compose: (
@@ -280,7 +281,7 @@ const App: React.FC = () => {
                         {Object.keys(starredFolders).map((k) => {
                             if (starredFolders[k]) {
                                 const folder: Folder | DefaultFolder =
-                                    folders.getFolderById(k) ||
+                                    folders.getFolderById(k) ??
                                     // if we fail to get the custom folder, its probably a default folder
                                     getDefaultFolder(k);
 
@@ -289,9 +290,12 @@ const App: React.FC = () => {
                                         <FolderItem
                                             name={folder.name}
                                             id={folder.id}
-                                            canUnstar
+                                            canUnstar={
+                                                (folder as any).canUnstar ??
+                                                true
+                                            }
                                             icon={
-                                                (folder as any).icon ||
+                                                (folder as any).icon ??
                                                 folderOutline
                                             }
                                             notifCount={notifications[k]}
@@ -330,6 +334,16 @@ const App: React.FC = () => {
                             title="Order Mail"
                         ></Icon>
                     </div>
+                    <ul>
+                        <Email
+                            sender="Lorem ipsum dolor sit amet"
+                            subject="Nullam non purus justo"
+                            contentShort="Aliquam tempor ante scelerisque finibus molestie. Nulla ac porttitor velit. Aliquam at tincidunt libero, et pulvinar ante. Interdum et malesuada fames ac ante ipsum primis in faucibus. Curabitur viverra augue sagittis turpis luctus, id vehicula velit accumsan."
+                            date={new Date("09/04/2023")}
+                            isUnread
+                            attachments={[Attachments.File, Attachments.Image]}
+                        ></Email>
+                    </ul>
                 </div>
             </section>
         </div>

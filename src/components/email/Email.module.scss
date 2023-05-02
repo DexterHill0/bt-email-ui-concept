@@ -1,0 +1,85 @@
+@import "../../styles.scss";
+
+.emailContainer {
+    display: flex;
+    flex-direction: column;
+
+    &:hover {
+        box-shadow: inset 0px -5px 8px -7px rgba(0, 0, 0, 0.3);
+
+        .email .reorder {
+            visibility: visible;
+        }
+    }
+
+    .email {
+        width: 100%;
+        height: 35px;
+        display: flex;
+        align-items: center;
+        margin-top: $edge-pad;
+        cursor: pointer;
+        z-index: 3;
+
+        .reorder {
+            color: $halfopacity;
+            cursor: move;
+            visibility: hidden;
+        }
+
+        .content {
+            display: grid;
+            width: 100%;
+            padding-left: $edge-pad;
+            display: grid;
+            grid-template-columns: auto auto auto min-content;
+            gap: 30px;
+            grid-template-areas: "sender title content info";
+            align-items: center;
+
+            .senderText {
+                grid-area: sender;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+            }
+
+            .subjectText {
+                grid-area: title;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+            }
+
+            .contentText {
+                grid-area: content;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+            }
+
+            .info {
+                grid-area: info;
+                padding: 0 $edge-pad 0;
+                display: flex;
+                align-items: center;
+                gap: 15px;
+
+                .attachments {
+                    display: flex;
+                    align-items: center;
+                    gap: 5px;
+
+                    .attachmentIcon {
+                        color: $halfopacity;
+                    }
+                }
+            }
+        }
+    }
+}
+
+.selected {
+    color: $primary;
+    background: $light-1;
+}
