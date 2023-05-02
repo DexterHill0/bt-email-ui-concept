@@ -18,6 +18,7 @@ import {
 } from "ionicons/icons";
 import { IonIcon } from "@ionic/react";
 import { v4 as uuidv4 } from "uuid";
+import { default as cx } from "classnames";
 
 import Header from "./components/header/Header";
 import Button from "./components/button/Button";
@@ -113,12 +114,13 @@ const App: React.FC = () => {
     const [selectedEmails, setSelectedEmails] = useState<{
         [key: string]: boolean;
     }>({});
+    // stores the emails deselected when every email is selected
     const [deselectedEmails, setDeselectedEmails] = useState<{
         [key: string]: boolean;
     }>({});
     const [selectedAll, setSelectedAll] = useState(false);
 
-    // memoize this value in case that the object gets very large
+    // memoize this value in case  the object gets very large
     const hasEmailSelected = useMemo(
         () => selectedAll || Object.values(selectedEmails).includes(true),
         [selectedEmails, selectedAll]
@@ -341,13 +343,21 @@ const App: React.FC = () => {
                             }
                         })}
                     </div>
-                    <div className={styles.emailTools}>
+                    <div
+                        className={cx({
+                            [styles.emailTools]: true,
+                            [styles.emailToolsDisabled]: EMAILS[selectedFolder]
+                                ? false
+                                : true,
+                        })}
+                    >
                         <CheckBox
                             width="15px"
                             height="15px"
                             title={"Select All Mail"}
                             isChecked={selectedAll}
                             onClick={(selected) => setSelectedAll(selected)}
+                            disabled={EMAILS[selectedFolder] ? false : true}
                         ></CheckBox>
                         <Icon
                             icon={searchOutline}

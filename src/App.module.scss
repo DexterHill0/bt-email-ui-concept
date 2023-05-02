@@ -91,6 +91,7 @@
         .favourited {
             flex: 1 0 auto;
             max-width: 200px;
+            box-shadow: none !important;
         }
 
         .emailTools {
@@ -99,6 +100,13 @@
             gap: 10px;
             & > * {
                 cursor: pointer;
+            }
+        }
+
+        .emailToolsDisabled {
+            opacity: 0.5;
+            & > * {
+                cursor: not-allowed !important;
             }
         }
     }
