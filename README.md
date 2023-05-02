@@ -14,3 +14,4 @@ The design was created in Figma then implemented with React and SCSS. The Figma 
 `npm run start`
 
 Or, view it here:
+https://dexterhill0.github.io/bt-email-ui-concept/
