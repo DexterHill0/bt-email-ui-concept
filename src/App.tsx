@@ -1,15 +1,18 @@
 import React, { useEffect, useState } from "react";
 import {
+    arrowDownOutline,
     chevronDownOutline,
     documentOutline,
     eyeOutline,
     fileTrayStackedOutline,
     flagOutline,
     folderOutline,
+    funnelOutline,
     pencilOutline,
     refreshOutline,
     returnUpBackOutline,
     returnUpForwardOutline,
+    searchOutline,
     trashOutline,
     warningOutline,
 } from "ionicons/icons";
@@ -23,6 +26,8 @@ import Resizable from "./components/resizable/Resizable";
 import FolderItem from "./components/folderitem/FolderItem";
 import Divider from "./components/divider/Divider";
 import CustomFolderItem from "./components/folderitem/CustomFolderItem";
+import Icon from "./components/icon/Icon";
+import CheckBox from "./components/checkbox/Checkbox";
 
 import useFolders, { Folder } from "./Folders";
 
@@ -162,6 +167,7 @@ const getDefaultFolder = (id: string): DefaultFolder | undefined => {
 const App: React.FC = () => {
     const email = "lorem.ipsum@dolor.sit";
 
+    // custom folders that can be added/deleted
     const folders = useFolders(["Lorem", "Ipsum"]);
 
     const [selectedFolder, setSelectedFolder] = useState("inbox");
@@ -170,10 +176,10 @@ const App: React.FC = () => {
         [key: string]: boolean;
     }>({
         inbox: true, // always starred
-        [folders.folders[1].id]: true,
+        [folders.folders[1].id]: true, // POC
     });
 
-    const [notifications, setNotifications] = useState<{
+    const [notifications, _setNotifications] = useState<{
         [key: string]: number;
     }>({
         inbox: 1,
@@ -271,10 +277,11 @@ const App: React.FC = () => {
                 </Resizable>
                 <div className={styles.emailView}>
                     <div className={styles.favouritedList}>
-                        {Object.keys(starredFolders).map((k, i) => {
+                        {Object.keys(starredFolders).map((k) => {
                             if (starredFolders[k]) {
                                 const folder: Folder | DefaultFolder =
                                     folders.getFolderById(k) ||
+                                    // if we fail to get the custom folder, its probably a default folder
                                     getDefaultFolder(k);
 
                                 return (
@@ -297,6 +304,31 @@ const App: React.FC = () => {
                                 );
                             }
                         })}
+                    </div>
+                    <div className={styles.emailTools}>
+                        <CheckBox
+                            width="15px"
+                            height="15px"
+                            title={"Select All Mail"}
+                        ></CheckBox>
+                        <Icon
+                            icon={searchOutline}
+                            iconSize="md"
+                            disableHidden
+                            title="Search Mail"
+                        ></Icon>
+                        <Icon
+                            icon={funnelOutline}
+                            iconSize="md"
+                            disableHidden
+                            title="Filter Mail"
+                        ></Icon>
+                        <Icon
+                            icon={arrowDownOutline}
+                            iconSize="md"
+                            disableHidden
+                            title="Order Mail"
+                        ></Icon>
                     </div>
                 </div>
             </section>

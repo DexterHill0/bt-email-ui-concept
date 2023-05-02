@@ -12,7 +12,10 @@ interface Props {
 
 const Notification: React.FunctionComponent<Props> = (props) => {
     return (
-        <div className={styles.container}>
+        <div
+            className={styles.container}
+            title={`${props.count} Unread E-Mail(s)`}
+        >
             <div className={styles.notification}>
                 <div className={styles.text}>
                     <Text>{(props.count || 0) > 99 ? "99+" : props.count}</Text>

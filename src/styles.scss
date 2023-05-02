@@ -4,7 +4,7 @@ $text-md: 16px;
 $text-sm: 12px;
 
 $icon-lg: 20px;
-$icon-md: 15px;
+$icon-md: 16px;
 
 $edge-pad: 13px;
 
@@ -24,7 +24,7 @@ $notif: #ff6767;
 $bdr-rds-sm: 10px;
 $bdr-rds-md: 20px;
 
-input,
+input:not([type="checkbox"]),
 button,
 ul,
 li,

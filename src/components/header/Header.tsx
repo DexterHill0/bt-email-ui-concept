@@ -56,6 +56,7 @@ const Header: React.FC = () => {
                 <IonIcon
                     icon={settingsOutline}
                     className={styles.settingsIcon}
+                    title="Page Settings"
                 ></IonIcon>
             </div>
         </header>

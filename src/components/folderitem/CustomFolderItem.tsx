@@ -19,11 +19,16 @@ const CustomFolderItem: React.FC<Props & FolderItemProps> = (props) => {
                 [styles.selected]: props.isSelected,
             })}
         >
-            <Icon icon={reorderThreeOutline} className={styles.reorder}></Icon>
+            <Icon
+                icon={reorderThreeOutline}
+                className={styles.reorder}
+                title="Reorder Folder"
+            ></Icon>
             <FolderItem {...props} className={styles.innerFolder}></FolderItem>
             <Icon
                 icon={ellipsisVerticalOutline}
                 className={styles.elipsis}
+                title="Folder Options"
             ></Icon>
         </li>
     );

@@ -52,6 +52,7 @@ const Search: React.FC<Props> = (props) => {
             <IonIcon
                 icon={optionsOutline}
                 className={styles.optionsIcon}
+                title="Search Filters"
             ></IonIcon>
         </div>
     );

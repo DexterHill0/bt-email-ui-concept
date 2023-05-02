@@ -43,7 +43,11 @@ const Button: React.FC<Props> = (props) => {
         >
             {props.icon ? (
                 <div className={styles.content}>
-                    <Icon icon={props.icon} iconSize={props.iconSize}></Icon>
+                    <Icon
+                        icon={props.icon}
+                        iconSize={props.iconSize}
+                        disableHidden
+                    ></Icon>
                     {props.children}
                 </div>
             ) : (

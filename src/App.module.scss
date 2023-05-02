@@ -76,6 +76,7 @@
         height: 100%;
         display: flex;
         padding: $edge-pad 0 $edge-pad 0;
+        flex-direction: column;
 
         .favouritedList {
             width: 100%;
@@ -86,6 +87,15 @@
         .favourited {
             flex: 1 0 auto;
             max-width: 200px;
+        }
+
+        .emailTools {
+            display: flex;
+            padding: $edge-pad 0 0 25px;
+            gap: 10px;
+            & > * {
+                cursor: pointer;
+            }
         }
     }
 }

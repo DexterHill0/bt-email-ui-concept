@@ -46,6 +46,7 @@ const FolderItem: React.FC<FolderItemProps> = (props) => {
             onMouseOver={() => setIsHovered(true)}
             onMouseOut={() => setIsHovered(false)}
             onClick={(e) => props.onClick && props.onClick(e, props.id)}
+            title={props.name}
         >
             <div className={styles.name}>
                 {props.notifCount ? (
@@ -80,6 +81,12 @@ const FolderItem: React.FC<FolderItemProps> = (props) => {
                         props.canUnstar &&
                         props.onStarred(props.id);
                 }}
+                disableHidden={props.canUnstar}
+                title={
+                    props.canUnstar
+                        ? `${props.isStarred ? "Unstar" : "Star"} Folder`
+                        : ""
+                }
             ></Icon>
         </li>
     );
