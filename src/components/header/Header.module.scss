@@ -11,6 +11,7 @@ $gap: 55px;
     overflow: hidden;
     position: relative;
     z-index: 5;
+    flex-shrink: 0;
 
     .headerContentRounded {
         height: 100%;

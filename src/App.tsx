@@ -13,6 +13,7 @@ import {
     returnUpBackOutline,
     returnUpForwardOutline,
     searchOutline,
+    sendOutline,
     trashOutline,
     warningOutline,
 } from "ionicons/icons";
@@ -49,6 +50,12 @@ const DEFAULT_FOLDERS: DefaultFolder[] = [
         id: "inbox",
         canUnstar: false,
         icon: fileTrayStackedOutline,
+    },
+    {
+        name: "Sent",
+        id: "sent",
+        canUnstar: true,
+        icon: sendOutline,
     },
     {
         name: "Drafts",
@@ -365,7 +372,9 @@ const App: React.FC = () => {
                             disableHidden
                             title="Search Mail"
                             onClick={() =>
-                                searchRef.current && searchRef.current.focus()
+                                EMAILS[selectedFolder] &&
+                                searchRef.current &&
+                                searchRef.current.focus()
                             }
                         ></Icon>
                         <Icon
