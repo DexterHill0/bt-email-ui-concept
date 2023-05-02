@@ -4,7 +4,11 @@ import { default as cx } from "classnames";
 import Divider from "../divider/Divider";
 
 import styles from "./Resizable.module.scss";
-import { isVisible } from "@testing-library/user-event/dist/utils";
+import { isWebkit } from "../../utils";
+
+// `stretch` is the official property value but it's experimental so the vendor-specific
+// fill-availabe do the same thing
+const STRETCH = isWebkit ? "-webkit-fill-available" : "-moz-available";
 
 interface Props {
     orientation?: "v" | "h";
@@ -34,12 +38,14 @@ const Resizable: React.FC<Props> = (props) => {
     const [contentVisible, setContentVisible] = useState(true);
 
     const collapseThreshold = props.collapseThreshold || 100;
-    let collapseDragAmount = 0;
+    let collapseDragAmount = useRef(0);
 
-    const [prevDragAmount, setPrevDragAmount] = useState(0);
+    let prevMinSize = useRef<[number, number] | null>(null);
 
     const [isDragging, setIsDragging] = useState(false);
-    const [size, setSize] = useState({
+    const [size, setSize] = useState<{
+        [key: string]: number | string;
+    }>({
         width: props.width || 0,
         height: props.height || 0,
     });
@@ -48,8 +54,6 @@ const Resizable: React.FC<Props> = (props) => {
 
     useEffect(() => {
         if (isDragging) {
-            collapseDragAmount = prevDragAmount;
-
             window.addEventListener("mousemove", onMouseMove);
             window.addEventListener("mouseup", () => {
                 onEndDrag();
@@ -63,6 +67,8 @@ const Resizable: React.FC<Props> = (props) => {
         setIsDragging(false);
     };
     const onStartDrag = () => {
+        // make the cursor the same for the whole document as when dragging it isnt hovering over
+        // the drag element
         document.body.style.cursor = "col-resize";
         setIsDragging(true);
     };
@@ -74,7 +80,7 @@ const Resizable: React.FC<Props> = (props) => {
 
         let [width, height] = calcConstraints(
             e.clientX,
-            e.clientY,
+            document.body.offsetHeight - e.clientY,
             e.movementX,
             e.movementY
         );
@@ -93,7 +99,7 @@ const Resizable: React.FC<Props> = (props) => {
         height: number,
         changeX: number,
         changeY: number
-    ): [number, number] => {
+    ): [number | string, number | string] => {
         const { minConstraints, maxConstraints } = props;
 
         // short circuit
@@ -105,36 +111,45 @@ const Resizable: React.FC<Props> = (props) => {
             contentRef.current &&
             parentRef.current
         ) {
-            if (
-                (!isHorizontal &&
-                    contentRef.current.offsetWidth -
-                        parentRef.current.offsetWidth >=
-                        0) ||
-                (isHorizontal &&
-                    contentRef.current.offsetHeight -
-                        parentRef.current.offsetHeight >=
-                        0)
-            ) {
-                collapseDragAmount -= isHorizontal ? changeY : changeX;
-                setPrevDragAmount(collapseDragAmount);
+            // we want to keep track of the previous min size as using a block element (div) to contain
+            // the content means `offsetWidth/height` become 0px after collapsing so it is impossible to
+            // uncollapse. the previous min size means we can compare agains that, instead of the 0px value
+            let [minX, minY] = prevMinSize.current || [
+                contentRef.current.offsetWidth,
+                contentRef.current.offsetHeight,
+            ];
 
-                if (collapseDragAmount >= collapseThreshold) {
+            if (
+                (!isHorizontal && minX - parentRef.current.offsetWidth >= 0) ||
+                (isHorizontal && minY - parentRef.current.offsetHeight >= 0)
+            ) {
+                collapseDragAmount.current -= isHorizontal ? -changeY : changeX;
+
+                if (collapseDragAmount.current >= collapseThreshold) {
                     setContentVisible(false);
+
+                    if (!prevMinSize.current) {
+                        prevMinSize.current = [
+                            contentRef.current.offsetWidth,
+                            contentRef.current.offsetHeight,
+                        ];
+                    }
+
                     return [0, 0];
                 } else if (
-                    (collapseDragAmount < collapseThreshold &&
+                    (collapseDragAmount.current < collapseThreshold &&
                         !isHorizontal &&
-                        width <= contentRef.current.offsetWidth) ||
-                    (isHorizontal && height <= contentRef.current.offsetHeight)
+                        width <= minX) ||
+                    (isHorizontal && height <= minY)
                 ) {
                     setContentVisible(true);
-                    return [
-                        contentRef.current.offsetWidth,
-                        contentRef.current.offsetHeight,
-                    ];
+                    return [minX, minY];
                 } else {
-                    collapseDragAmount = 0;
-                    setPrevDragAmount(collapseDragAmount);
+                    // sometimes if the height is too small it skips the above condition and doesnt get set to visible
+                    // so we do it here just in case
+                    setContentVisible(true);
+                    collapseDragAmount.current = 0;
+                    prevMinSize.current = null;
                 }
             }
         }
@@ -161,17 +176,18 @@ const Resizable: React.FC<Props> = (props) => {
             }}
             className={cx(props.className, styles.resizable)}
             ref={parentRef}
+            data-orientation={props.orientation || "h"}
         >
             <div
                 style={{
                     width: !isHorizontal
                         ? contentVisible
-                            ? "inherit"
+                            ? STRETCH
                             : "0px"
                         : "inherit",
                     height: isHorizontal
                         ? contentVisible
-                            ? "inherit"
+                            ? STRETCH
                             : "0px"
                         : "inherit",
                 }}
@@ -179,9 +195,9 @@ const Resizable: React.FC<Props> = (props) => {
                     [styles.visibility]: !contentVisible,
                 })}
             >
-                <span ref={contentRef} className={props.contentClassName}>
+                <div ref={contentRef} className={props.contentClassName}>
                     {props.children}
-                </span>
+                </div>
             </div>
             <div
                 data-orientation={props.orientation || "h"}

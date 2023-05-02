@@ -22,6 +22,9 @@ import Search from "./components/search/Search";
 import Resizable from "./components/resizable/Resizable";
 import FolderItem from "./components/folderitem/FolderItem";
 import Divider from "./components/divider/Divider";
+import CustomFolderItem from "./components/folderitem/CustomFolderItem";
+
+import useFolders, { Folder } from "./Folders";
 
 import styles from "./App.module.scss";
 
@@ -119,7 +122,14 @@ const BUTTONS: { [key: string]: JSX.Element } = {
     ),
 };
 
-const DEFAULT_FOLDERS = [
+interface DefaultFolder {
+    name: string;
+    id: string;
+    canUnstar: boolean;
+    icon: string;
+}
+
+const DEFAULT_FOLDERS: DefaultFolder[] = [
     {
         name: "Inbox",
         id: "inbox",
@@ -145,21 +155,36 @@ const DEFAULT_FOLDERS = [
         icon: trashOutline,
     },
 ];
+const getDefaultFolder = (id: string): DefaultFolder | undefined => {
+    return DEFAULT_FOLDERS.find((f) => f.id === id);
+};
 
 const App: React.FC = () => {
     const email = "lorem.ipsum@dolor.sit";
 
-    const [folders, setFolders] = useState([]);
+    const folders = useFolders(["Lorem", "Ipsum"]);
 
     const [selectedFolder, setSelectedFolder] = useState("inbox");
-    // inbox always starred so doesnt need to be here
+
     const [starredFolders, setStarredFolders] = useState<{
         [key: string]: boolean;
-    }>({});
+    }>({
+        inbox: true, // always starred
+        [folders.folders[1].id]: true,
+    });
 
-    useEffect(() => {
-        console.log(starredFolders);
-    }, [starredFolders]);
+    const [notifications, setNotifications] = useState<{
+        [key: string]: number;
+    }>({
+        inbox: 1,
+    });
+
+    const onStarFolder = (id: string) => {
+        setStarredFolders({
+            ...starredFolders,
+            [id]: !starredFolders[id],
+        });
+    };
 
     return (
         <div className={styles.app}>
@@ -205,26 +230,75 @@ const App: React.FC = () => {
                     disableSelectOnDrag
                     collapseOnMinContent
                 >
-                    <ul>
-                        {DEFAULT_FOLDERS.map((f, i) => (
+                    <ul className={styles.folderUl}>
+                        {DEFAULT_FOLDERS.map((f) => (
                             <FolderItem
                                 name={f.name}
                                 icon={f.icon}
                                 canUnstar={f.canUnstar}
                                 isSelected={selectedFolder === f.id}
-                                isStarred={starredFolders[i]}
+                                isStarred={starredFolders[f.id]}
                                 id={f.id}
                                 onClick={(_, i) => setSelectedFolder(i)}
-                                onStarred={(i) =>
-                                    setStarredFolders({
-                                        ...starredFolders,
-                                        [i]: !starredFolders[i],
-                                    })
-                                }
+                                onStarred={onStarFolder}
+                                notifCount={notifications[f.id]}
                             ></FolderItem>
                         ))}
                     </ul>
+                    <Resizable
+                        height={250}
+                        disableSelectOnDrag
+                        collapseOnMinContent
+                        contentClassName={styles.customFolderList}
+                        collapseThreshold={10}
+                    >
+                        <ul className={styles.folderUl}>
+                            {folders.folders.map((f) => (
+                                <CustomFolderItem
+                                    name={f.name}
+                                    icon={folderOutline}
+                                    canUnstar
+                                    isSelected={selectedFolder === f.id}
+                                    isStarred={starredFolders[f.id]}
+                                    id={f.id}
+                                    onClick={(_, i) => setSelectedFolder(i)}
+                                    onStarred={onStarFolder}
+                                    notifCount={notifications[f.id]}
+                                ></CustomFolderItem>
+                            ))}
+                        </ul>
+                    </Resizable>
                 </Resizable>
+                <div className={styles.emailView}>
+                    <div className={styles.favouritedList}>
+                        {Object.keys(starredFolders).map((k, i) => {
+                            if (starredFolders[k]) {
+                                const folder: Folder | DefaultFolder =
+                                    folders.getFolderById(k) ||
+                                    getDefaultFolder(k);
+
+                                return (
+                                    <>
+                                        <FolderItem
+                                            name={folder.name}
+                                            id={folder.id}
+                                            canUnstar
+                                            icon={
+                                                (folder as any).icon ||
+                                                folderOutline
+                                            }
+                                            notifCount={notifications[k]}
+                                            className={styles.favourited}
+                                            isStarred={starredFolders[k]}
+                                            onStarred={onStarFolder}
+                                        ></FolderItem>
+                                        <Divider orientation="v"></Divider>
+                                    </>
+                                );
+                            }
+                        })}
+                    </div>
+                </div>
             </section>
         </div>
     );

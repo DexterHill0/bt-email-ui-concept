@@ -5,7 +5,6 @@
     display: flex;
     height: 35px;
     align-items: center;
-    min-width: min-content;
     gap: 15px;
     cursor: pointer;
 
@@ -25,4 +24,27 @@
 .selected {
     color: $primary;
     background: $light-1;
+}
+
+// CustomFolder.tsx
+
+.customFolder {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    padding: 0 30px 0 30px;
+    gap: 15px;
+
+    .innerFolder {
+        padding: 0 !important;
+        width: 100%;
+    }
+
+    .elipsis {
+        margin-left: auto;
+    }
+
+    .reorder {
+        cursor: move;
+    }
 }

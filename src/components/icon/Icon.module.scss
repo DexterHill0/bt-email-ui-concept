@@ -1,6 +1,8 @@
 @import "../../styles.scss";
 
 .icon {
+    aspect-ratio: 1/1;
+
     &[data-size="md"] {
         width: $icon-md;
         height: $icon-md;

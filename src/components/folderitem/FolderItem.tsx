@@ -8,7 +8,7 @@ import Notification from "../notification/Notification";
 
 import styles from "./FolderItem.module.scss";
 
-interface Props {
+export interface FolderItemProps {
     icon: string;
     name: string;
     id: string;
@@ -22,6 +22,8 @@ interface Props {
 
     notifCount?: number;
 
+    className?: string;
+
     onClick?: (
         event: React.MouseEvent<HTMLLIElement, MouseEvent>,
         id: string
@@ -29,15 +31,18 @@ interface Props {
     onStarred?: (id: string) => void;
 }
 
-const FolderItem: React.FC<Props> = (props) => {
+const FolderItem: React.FC<FolderItemProps> = (props) => {
     const [isHovered, setIsHovered] = useState(false);
 
     return (
         <li
-            className={cx({
-                [styles.folder]: true,
-                [styles.selected]: props.isSelected,
-            })}
+            className={cx(
+                {
+                    [styles.folder]: true,
+                    [styles.selected]: props.isSelected,
+                },
+                props.className
+            )}
             onMouseOver={() => setIsHovered(true)}
             onMouseOut={() => setIsHovered(false)}
             onClick={(e) => props.onClick && props.onClick(e, props.id)}
@@ -61,16 +66,19 @@ const FolderItem: React.FC<Props> = (props) => {
                 className={styles.star}
                 style={{
                     opacity:
-                        isHovered && !props.isStarred
+                        isHovered && !props.isStarred && props.canUnstar
                             ? "0.5"
                             : props.isStarred || !props.canUnstar
                             ? "1"
                             : "0",
                 }}
                 onClick={(e) => {
+                    // dont want the even to propogate otherwise the folder would also become selected when starred
                     e.stopPropagation();
                     e.preventDefault();
-                    props.onStarred && props.onStarred(props.id);
+                    props.onStarred &&
+                        props.canUnstar &&
+                        props.onStarred(props.id);
                 }}
             ></Icon>
         </li>
